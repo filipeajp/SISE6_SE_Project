@@ -1,0 +1,6 @@
+/Users/ars/Repositories/sise5/sise-aulas/sise-bank/src/main/java/pt/ulisboa/tecnico/learnjava/bank/module-info.java
+/Users/ars/Repositories/sise5/sise-aulas/sise-bank/src/main/java/pt/ulisboa/tecnico/learnjava/bank/domain/Bank.java
+/Users/ars/Repositories/sise5/sise-aulas/sise-bank/src/main/java/pt/ulisboa/tecnico/learnjava/bank/exceptions/AccountException.java
+/Users/ars/Repositories/sise5/sise-aulas/sise-bank/src/main/java/pt/ulisboa/tecnico/learnjava/bank/domain/Account.java
+/Users/ars/Repositories/sise5/sise-aulas/sise-bank/src/main/java/pt/ulisboa/tecnico/learnjava/bank/exceptions/BankException.java
+/Users/ars/Repositories/sise5/sise-aulas/sise-bank/src/main/java/pt/ulisboa/tecnico/learnjava/bank/services/Services.java
