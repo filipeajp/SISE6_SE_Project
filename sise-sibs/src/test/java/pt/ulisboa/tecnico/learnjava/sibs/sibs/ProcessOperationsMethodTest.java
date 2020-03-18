@@ -43,8 +43,6 @@ public class ProcessOperationsMethodTest {
 	private static final String IBAN_1 = "CK1";
 	private static final String IBAN_2 = "CK2";
 
-	private static final int NOPS = 1;
-
 	private Sibs sibs;
 	private Bank sourceBank;
 	private Bank targetBank;
@@ -95,19 +93,29 @@ public class ProcessOperationsMethodTest {
 		String targetIban = this.targetBank.createAccount(Bank.AccountType.CHECKING, this.targetClient, 1000, 0);
 
 		this.sibs.transfer(sourceIban, targetIban, VALUE);
-
 		TransferOperation operation1 = (TransferOperation) this.sibs.getOperation(0);
+		assertTrue(operation1.getCurrentState() instanceof Completed);
 
-		this.sibs.cancelOperation(0);
+		this.sibs.transfer(sourceIban, targetIban, VALUE);
+		TransferOperation operation2 = (TransferOperation) this.sibs.getOperation(1);
+		assertTrue(operation2.getCurrentState() instanceof Completed);
+
+		this.sibs.transfer(sourceIban, targetIban, VALUE);
+		TransferOperation operation3 = (TransferOperation) this.sibs.getOperation(2);
+		assertTrue(operation3.getCurrentState() instanceof Completed);
+
+		this.sibs.cancelOperation(1);
 		this.sibs.processOperations();
 
-		assertEquals(1000, this.services.getAccountByIban(sourceIban).getBalance());
-		assertEquals(1000, this.services.getAccountByIban(targetIban).getBalance());
-		assertEquals(100, this.sibs.getTotalValueOfOperations());
-		assertEquals(100, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_TRANSFER));
+		assertEquals(788, this.services.getAccountByIban(sourceIban).getBalance());
+		assertEquals(1200, this.services.getAccountByIban(targetIban).getBalance());
+		assertEquals(300, this.sibs.getTotalValueOfOperations());
+		assertEquals(300, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_TRANSFER));
 		assertEquals(0, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_PAYMENT));
-		assertEquals(1, this.sibs.getNumberOfOperations());
-		assertTrue(operation1.getCurrentState() instanceof Cancelled);
+		assertEquals(3, this.sibs.getNumberOfOperations());
+		assertTrue(operation1.getCurrentState() instanceof Completed);
+		assertTrue(operation2.getCurrentState() instanceof Cancelled);
+		assertTrue(operation3.getCurrentState() instanceof Completed);
 
 	}
 

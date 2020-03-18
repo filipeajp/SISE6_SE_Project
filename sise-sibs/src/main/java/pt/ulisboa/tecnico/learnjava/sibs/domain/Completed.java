@@ -11,4 +11,14 @@ public class Completed extends State {
 			instance = new Completed();
 		return instance;
 	}
+
+	@Override
+	public void process(TransferOperation t) {
+		t.setState(Completed.getInstance());
+	}
+
+	@Override
+	public void cancel(TransferOperation t) {
+		t.setState(Completed.getInstance());
+	}
 }

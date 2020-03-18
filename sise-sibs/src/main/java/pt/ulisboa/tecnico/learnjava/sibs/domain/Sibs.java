@@ -23,73 +23,37 @@ public class Sibs {
 
 		int position = this.addOperation(Operation.OPERATION_TRANSFER, sourceIban, targetIban, amount);
 
-//		TransferOperation operation = (TransferOperation) this.getOperation(position);
-//
-//		String sourceBankCode = this.services.getBankCodeByIban(sourceIban);
-//		String targetBankCode = this.services.getBankCodeByIban(targetIban);
-//
-//		if (sourceBankCode.equals(targetBankCode)) {
-//			this.services.withdraw(sourceIban, amount);
-//			operation.process();
-//		} else {
-//			this.services.withdraw(sourceIban, amount + operation.commission());
-//			operation.process();
-//		}
-//
-//		try {
-//			this.services.deposit(targetIban, amount);
-//			operation.process();
-//			operation.process();
-//		} catch (AccountException e) {
-//			this.removeOperation(position);
-//			throw new SibsException();
-//		}
+		TransferOperation operation = null;
+
+		try {
+			operation = (TransferOperation) this.getOperation(position);
+			while (!(operation.getCurrentState() instanceof Completed))
+				operation.process();
+		} catch (SibsException | AccountException e) {
+			operation.retry();
+		}
 	}
 
 	public void processOperations() throws SibsException, AccountException {
 		TransferOperation operation = null;
-		String sourceIban;
-		String targetIban;
-		int amount;
-
 		for (int i = 0; i < this.getNumberOfOperations(); i++) {
+			// while operation is not in state completed
 			try {
 				operation = (TransferOperation) this.getOperation(i);
-				sourceIban = operation.getSourceIban();
-				targetIban = operation.getTargetIban();
-				amount = operation.getValue();
-
 				if (!(operation.getCurrentState() instanceof Cancelled
 						|| operation.getCurrentState() instanceof Completed)) {
-
-					if (this.services.getBankCodeByIban(sourceIban)
-							.equals(this.services.getBankCodeByIban(targetIban))) {
-						this.services.withdraw(sourceIban, amount);
+					while (!(operation.getCurrentState() instanceof Completed)) {
 						operation.process();
-					} else {
-						this.services.withdraw(sourceIban, amount + operation.commission());
-						operation.process();
-					}
-
-					try {
-						this.services.deposit(targetIban, amount);
-						operation.process();
-						operation.process();
-					} catch (AccountException e) {
-//						this.removeOperation(i);
-						throw new SibsException();
 					}
 				}
 			} catch (SibsException | AccountException e) {
 				operation.retry();
 			}
 		}
-
 	}
 
-	public void cancelOperation(int position) throws SibsException {
+	public void cancelOperation(int position) throws SibsException, AccountException {
 		TransferOperation operation = (TransferOperation) this.getOperation(position);
-
 		operation.cancel();
 	}
 

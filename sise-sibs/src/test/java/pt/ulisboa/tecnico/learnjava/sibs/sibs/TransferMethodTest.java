@@ -76,8 +76,8 @@ public class TransferMethodTest {
 
 		this.sibs.transfer(IBAN_1, IBAN_2, AMOUNT_1);
 
-//		verify(this.mockServices).withdraw(IBAN_1, AMOUNT_1);
-//		verify(this.mockServices).deposit(IBAN_2, AMOUNT_1);
+		verify(this.mockServices).withdraw(IBAN_1, AMOUNT_1);
+		verify(this.mockServices).deposit(IBAN_2, AMOUNT_1);
 
 		assertEquals(1, this.sibs.getNumberOfOperations());
 		assertEquals(AMOUNT_1, this.sibs.getTotalValueOfOperations());

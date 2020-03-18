@@ -11,4 +11,14 @@ public class Cancelled extends State {
 			instance = new Cancelled();
 		return instance;
 	}
+
+	@Override
+	public void process(TransferOperation t) {
+
+	}
+
+	@Override
+	public void cancel(TransferOperation t) {
+
+	}
 }

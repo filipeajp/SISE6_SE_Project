@@ -13,4 +13,14 @@ public class Retry extends State {
 		return instance;
 	}
 
+	@Override
+	public void process(TransferOperation t) {
+
+	}
+
+	@Override
+	public void cancel(TransferOperation t) {
+
+	}
+
 }

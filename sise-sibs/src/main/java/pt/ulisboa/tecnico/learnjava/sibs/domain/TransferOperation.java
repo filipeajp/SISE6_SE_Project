@@ -1,6 +1,8 @@
 package pt.ulisboa.tecnico.learnjava.sibs.domain;
 
+import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.OperationException;
+import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
 public class TransferOperation extends Operation {
 	private final String sourceIban;
@@ -46,13 +48,12 @@ public class TransferOperation extends Operation {
 		this.currentState = s;
 	}
 
-	public void process() {
+	public void process() throws AccountException, SibsException {
 		this.currentState.process(this);
 	}
 
-	public void cancel() {
-		if (!(this.currentState instanceof Completed))
-			this.currentState = Cancelled.getInstance();
+	public void cancel() throws SibsException, AccountException {
+		this.currentState.cancel(this);
 	}
 
 	public void retry() {
