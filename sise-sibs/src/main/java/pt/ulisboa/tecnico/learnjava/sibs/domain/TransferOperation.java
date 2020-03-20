@@ -11,7 +11,8 @@ public class TransferOperation extends Operation {
 	Services services;
 
 	private State currentState;
-	private int attempts = 3;
+	private State lastState;
+	public int attempts = 3;
 
 	public TransferOperation(String sourceIban, String targetIban, int value, Services services)
 			throws OperationException {
@@ -52,21 +53,20 @@ public class TransferOperation extends Operation {
 		this.currentState = s;
 	}
 
+	public State getLastState() {
+		return this.lastState;
+	}
+
+	public void setLastState(State s) {
+		this.lastState = s;
+	}
+
 	public void process() throws AccountException, SibsException {
 		this.currentState.process(this, services);
 	}
 
 	public void cancel() throws SibsException, AccountException {
 		this.currentState.cancel(this, services);
-	}
-
-	public void retry() {
-		if (attempts == 0) {
-			this.currentState = Error.getInstance();
-		} else {
-			this.attempts--;
-			this.currentState = Retry.getInstance();
-		}
 	}
 
 	public String getBankCodeByIban(String iban) {

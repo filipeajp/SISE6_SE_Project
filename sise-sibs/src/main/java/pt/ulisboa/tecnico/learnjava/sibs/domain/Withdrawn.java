@@ -23,7 +23,7 @@ public class Withdrawn extends State {
 
 		try {
 			services.deposit(targetIban, t.getValue());
-			if (t.getBankCodeByIban(sourceIban).equals(t.getBankCodeByIban(targetIban)))
+			if (services.checkSameBanks(sourceIban, targetIban))
 				t.setState(Completed.getInstance());
 			else
 				t.setState(Deposited.getInstance());
@@ -37,10 +37,7 @@ public class Withdrawn extends State {
 		String sourceIban = t.getSourceIban();
 		String targetIban = t.getTargetIban();
 
-		if (t.getBankCodeByIban(sourceIban).equals(t.getBankCodeByIban(targetIban)))
-			services.deposit(t.getSourceIban(), t.getValue());
-		else
-			services.deposit(t.getSourceIban(), t.getValue() + t.commission());
+		services.deposit(t.getSourceIban(), t.getValue());
 
 		t.setState(Cancelled.getInstance());
 	}

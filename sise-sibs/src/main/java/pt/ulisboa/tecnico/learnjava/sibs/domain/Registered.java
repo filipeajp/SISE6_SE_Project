@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.learnjava.sibs.domain;
 
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.services.Services;
+import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
 public class Registered extends State {
 	private static Registered instance = null;
@@ -16,17 +17,16 @@ public class Registered extends State {
 	}
 
 	@Override
-	public void process(TransferOperation t, Services services) throws AccountException {
+	public void process(TransferOperation t, Services services) throws AccountException, SibsException {
 		String sourceIban = t.getSourceIban();
 		String targetIban = t.getTargetIban();
 
-		if (t.getBankCodeByIban(sourceIban).equals(t.getBankCodeByIban(targetIban)))
+		try {
 			services.withdraw(t.getSourceIban(), t.getValue());
-		else
-			services.withdraw(t.getSourceIban(), t.getValue() + t.commission());
-
-		t.setState(Withdrawn.getInstance());
-
+			t.setState(Withdrawn.getInstance());
+		} catch (AccountException e) {
+			throw new SibsException();
+		}
 	}
 
 	@Override

@@ -1,8 +1,9 @@
-package SibsInterface;
+package mbwayInterface;
 
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.services.Services;
 import pt.ulisboa.tecnico.learnjava.sibs.domain.Sibs;
+import pt.ulisboa.tecnico.learnjava.sibs.exceptions.MBAccountException;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.OperationException;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
@@ -17,16 +18,17 @@ public class MBWayInterfaceController {
 	private boolean isRunning;
 
 	private int nrOperations = 100;
+
 	private String[] friends;
 	private int totalBill;
 
-	public MBWayInterfaceController(MBWayInterfaceModel model, MBWayInterfaceView view) {
+	public MBWayInterfaceController(MBWayInterfaceModel model, MBWayInterfaceView view, Services services, Sibs sibs) {
 		this.model = model;
 		this.view = view;
 
 		this.isRunning = true;
-		this.services = new Services();
-		this.sibs = new Sibs(nrOperations, this.services);
+		this.services = services;
+		this.sibs = sibs;
 
 	}
 
@@ -46,7 +48,7 @@ public class MBWayInterfaceController {
 		model.setUserInput(userInput);
 	}
 
-	public void updateView() throws SibsException, AccountException, OperationException {
+	public void updateView() throws SibsException, AccountException, OperationException, MBAccountException {
 
 		String[] userArgs = this.processInput(this.getUserInput());
 
@@ -101,11 +103,25 @@ public class MBWayInterfaceController {
 			} else if (counter < nrFriends) {
 				view.missingFriends();
 			} else {
-				// ???
-				int amountToPay = totalAmount / counter;
 
-				for (String friend : friends) {
+				int amountToPay = totalAmount / (nrFriends + 1);
+				MBWayAccount friendAccount;
+				MBWayAccount userAccount = model.getMBAccount(model.getPhoneNumber());
+				int countSuccess = 0;
 
+				for (String friendPhone : friends) {
+					friendAccount = model.getMBAccount(friendPhone);
+
+					if (this.services.getAccountByIban(friendAccount.getIBAN()).getBalance() < amountToPay) {
+						view.friendNotEnoughMoney();
+					} else {
+						this.sibs.transfer(friendAccount.getIBAN(), userAccount.getIBAN(), amountToPay);
+						countSuccess++;
+					}
+				}
+				// ver isto
+				if (nrFriends == countSuccess) {
+					view.successfullBillTransfer();
 				}
 			}
 
@@ -137,15 +153,20 @@ public class MBWayInterfaceController {
 		String targetPhone = userArgs[2];
 		int amount = Integer.parseInt(userArgs[3]);
 
-		MBWayAccount sourceAccount = model.getMBAccount(sourcePhone);
-		MBWayAccount targetAccount = model.getMBAccount(targetPhone);
+		MBWayAccount sourceAccount = null;
+		MBWayAccount targetAccount = null;
+		try {
+			sourceAccount = model.getMBAccount(sourcePhone);
+			targetAccount = model.getMBAccount(targetPhone);
+		} catch (MBAccountException e) {
+			view.wrongPhoneNumber();
+		}
 
 		if (!targetAccount.confirmationState()) {
 			view.wrongPhoneNumber();
 		} else if (this.services.getAccountByIban(sourceAccount.getIBAN()).getBalance() < amount) {
 			view.notEnoughMoney();
 		} else {
-			// mudei para receber os services
 			this.sibs.transfer(sourceAccount.getIBAN(), targetAccount.getIBAN(), amount);
 			view.successfullTransfer();
 		}

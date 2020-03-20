@@ -1,4 +1,4 @@
-package SibsInterface;
+package mbwayInterface;
 
 public class MBWayInterfaceView {
 	
@@ -33,7 +33,8 @@ public class MBWayInterfaceView {
 	public void friendNotRegistered(String phoneNr) {
 		System.out.println("Friend " + phoneNr + " is not registered.");
 	}
-
+	
+	// duvida nesta view: pode faltar + do q 1 amigo
 	public void missingFriends() {
 		System.out.println("Oh no! Friends are missing.");
 	}
@@ -44,6 +45,14 @@ public class MBWayInterfaceView {
 	
 	public void billWrong() {
 		System.out.println("Something is wrong. Did you set the bill right?");		
+	}
+
+	public void successfullBillTransfer() {
+		System.out.println("Bill payed successfully!");
+	}
+
+	public void friendNotEnoughMoney() {
+		System.out.println("Oh no! One friend does not have money to pay!");
 	}
 
 }

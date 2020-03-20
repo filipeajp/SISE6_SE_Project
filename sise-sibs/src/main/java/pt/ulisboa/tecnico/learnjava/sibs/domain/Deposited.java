@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.learnjava.sibs.domain;
 
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.services.Services;
+import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
 public class Deposited extends State {
 	private static Deposited instance = null;
@@ -16,8 +17,14 @@ public class Deposited extends State {
 	}
 
 	@Override
-	public void process(TransferOperation t, Services services) {
-		t.setState(Completed.getInstance());
+	public void process(TransferOperation t, Services services) throws AccountException, SibsException {
+		try {
+			services.withdraw(t.getSourceIban(), t.commission());
+			t.setState(Completed.getInstance());
+		} catch (AccountException e) {
+			throw new SibsException();
+		}
+
 	}
 
 	@Override
@@ -26,11 +33,7 @@ public class Deposited extends State {
 		String targetIban = t.getTargetIban();
 
 		services.withdraw(targetIban, t.getValue());
-
-		if (t.getBankCodeByIban(sourceIban).equals(t.getBankCodeByIban(targetIban)))
-			services.deposit(t.getSourceIban(), t.getValue());
-		else
-			services.deposit(t.getSourceIban(), t.getValue() + t.commission());
+		services.deposit(t.getSourceIban(), t.getValue());
 
 		t.setState(Cancelled.getInstance());
 	}

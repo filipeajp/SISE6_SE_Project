@@ -26,14 +26,18 @@ public class Services {
 
 		return account;
 	}
-	
+
 	public boolean AccountExists(String iban) {
-		if(this.getAccountByIban(iban) == null) {
+		if (this.getAccountByIban(iban) == null) {
 			return false;
 		}
 		return true;
 	}
-	
+
+	public boolean checkSameBanks(String iban1, String iban2) {
+		return getBankCodeByIban(iban1).equals(getBankCodeByIban(iban2));
+	}
+
 	public String getBankCodeByIban(String iban) {
 		return iban.substring(0, 3);
 	}

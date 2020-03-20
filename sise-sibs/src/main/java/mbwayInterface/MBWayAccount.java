@@ -1,10 +1,10 @@
-package SibsInterface;
+package mbwayInterface;
 
 public class MBWayAccount {
 
 	private String iban;
 	private boolean isConfirmed;
-	
+
 	public MBWayAccount(String phoneNumber) {
 		this.iban = phoneNumber;
 		this.isConfirmed = false;
@@ -21,8 +21,5 @@ public class MBWayAccount {
 	public void confirm() {
 		this.isConfirmed = true;
 	}
-	
-	
-	
-	
+
 }

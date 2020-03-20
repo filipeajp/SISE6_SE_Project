@@ -21,17 +21,7 @@ public class Sibs {
 			throw new SibsException();
 		}
 
-		int position = this.addOperation(Operation.OPERATION_TRANSFER, sourceIban, targetIban, amount);
-
-		TransferOperation operation = null;
-
-		try {
-			operation = (TransferOperation) this.getOperation(position);
-			while (!(operation.getCurrentState() instanceof Completed))
-				operation.process();
-		} catch (SibsException | AccountException e) {
-			operation.retry();
-		}
+		this.addOperation(Operation.OPERATION_TRANSFER, sourceIban, targetIban, amount);
 	}
 
 	public void processOperations() throws SibsException, AccountException {
@@ -47,7 +37,9 @@ public class Sibs {
 						}
 					}
 				} catch (SibsException | AccountException e) {
-					operation.retry();
+					operation.setLastState(operation.getCurrentState());
+					operation.setState(Retry.getInstance());
+					operation.process();
 				}
 			}
 		}
@@ -55,6 +47,9 @@ public class Sibs {
 
 	public void cancelOperation(int position) throws SibsException, AccountException {
 		TransferOperation operation = (TransferOperation) this.getOperation(position);
+		if (operation == null)
+			throw new SibsException();
+
 		operation.cancel();
 	}
 
