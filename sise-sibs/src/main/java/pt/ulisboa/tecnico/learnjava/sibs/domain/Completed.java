@@ -1,5 +1,7 @@
 package pt.ulisboa.tecnico.learnjava.sibs.domain;
 
+import pt.ulisboa.tecnico.learnjava.bank.services.Services;
+
 public class Completed extends State {
 	private static Completed instance = null;
 
@@ -13,12 +15,10 @@ public class Completed extends State {
 	}
 
 	@Override
-	public void process(TransferOperation t) {
-		t.setState(Completed.getInstance());
+	public void process(TransferOperation t, Services services) {
 	}
 
 	@Override
-	public void cancel(TransferOperation t) {
-		t.setState(Completed.getInstance());
+	public void cancel(TransferOperation t, Services services) {
 	}
 }

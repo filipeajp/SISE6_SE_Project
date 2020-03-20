@@ -1,5 +1,7 @@
 package pt.ulisboa.tecnico.learnjava.sibs.domain;
 
+import pt.ulisboa.tecnico.learnjava.bank.services.Services;
+
 public class Cancelled extends State {
 	private static Cancelled instance = null;
 
@@ -13,12 +15,10 @@ public class Cancelled extends State {
 	}
 
 	@Override
-	public void process(TransferOperation t) {
-
+	public void process(TransferOperation t, Services services) {
 	}
 
 	@Override
-	public void cancel(TransferOperation t) {
-
+	public void cancel(TransferOperation t, Services services) {
 	}
 }

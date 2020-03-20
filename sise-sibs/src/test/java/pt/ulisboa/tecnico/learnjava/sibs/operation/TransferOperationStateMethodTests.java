@@ -39,9 +39,8 @@ public class TransferOperationStateMethodTests {
 	private Client sourceClient;
 	private Client targetClient;
 	private Services services;
-
-//	private static final String SOURCE_IBAN = "SourceIban";
-//	private static final String TARGET_IBAN = "TargetIban";
+//-------------------------------------------------
+// fazer asserts para os valores das contas
 
 	@Before
 	public void setUp() throws ClientException, BankException, AccountException {
@@ -58,7 +57,7 @@ public class TransferOperationStateMethodTests {
 		String sourceIban = this.sourceBank.createAccount(Bank.AccountType.CHECKING, this.sourceClient, 1000, 0);
 		String targetIban = this.targetBank.createAccount(Bank.AccountType.CHECKING, this.targetClient, 1000, 0);
 
-		TransferOperation operation = new TransferOperation(sourceIban, targetIban, VALUE);
+		TransferOperation operation = new TransferOperation(sourceIban, targetIban, VALUE, this.services);
 
 		assertTrue(operation.getCurrentState() instanceof Registered);
 		operation.process();
@@ -81,7 +80,7 @@ public class TransferOperationStateMethodTests {
 			throws OperationException, AccountException, SibsException, BankException, ClientException {
 		String sourceIban = this.sourceBank.createAccount(Bank.AccountType.CHECKING, this.sourceClient, 1000, 0);
 
-		TransferOperation operation = new TransferOperation(sourceIban, sourceIban, VALUE);
+		TransferOperation operation = new TransferOperation(sourceIban, sourceIban, VALUE, this.services);
 
 		assertTrue(operation.getCurrentState() instanceof Registered);
 		operation.process();
@@ -101,7 +100,7 @@ public class TransferOperationStateMethodTests {
 		String sourceIban = this.sourceBank.createAccount(Bank.AccountType.CHECKING, this.sourceClient, 1000, 0);
 		String targetIban = this.targetBank.createAccount(Bank.AccountType.CHECKING, this.targetClient, 1000, 0);
 
-		TransferOperation operation = new TransferOperation(sourceIban, targetIban, VALUE);
+		TransferOperation operation = new TransferOperation(sourceIban, targetIban, VALUE, this.services);
 
 		assertTrue(operation.getCurrentState() instanceof Registered);
 		operation.process();

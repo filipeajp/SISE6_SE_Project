@@ -2,7 +2,6 @@ package pt.ulisboa.tecnico.learnjava.sibs.sibs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -19,6 +18,7 @@ import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
 import pt.ulisboa.tecnico.learnjava.bank.services.Services;
 import pt.ulisboa.tecnico.learnjava.sibs.domain.Cancelled;
 import pt.ulisboa.tecnico.learnjava.sibs.domain.Completed;
+import pt.ulisboa.tecnico.learnjava.sibs.domain.Error;
 import pt.ulisboa.tecnico.learnjava.sibs.domain.Operation;
 import pt.ulisboa.tecnico.learnjava.sibs.domain.Retry;
 import pt.ulisboa.tecnico.learnjava.sibs.domain.Sibs;
@@ -137,23 +137,49 @@ public class ProcessOperationsMethodTest {
 
 		try {
 			this.sibs.transfer(IBAN_1, IBAN_2, AMOUNT_1);
-			this.sibs.processOperations();
-			this.sibs.processOperations();
-			this.sibs.processOperations();
-			fail();
-		} catch (SibsException e) {
-//			verify(this.mockServices, times(1)).withdraw(IBAN_1, AMOUNT_1);
-//			verify(this.mockServices, times(1)).deposit(IBAN_2, AMOUNT_1);
-
-//			verify(this.mockOperation, times(3)).retry();
-			assertTrue(this.mockOperation.getCurrentState() instanceof Retry);
-
-//			assertEquals(0, this.sibs.getNumberOfOperations());
-//			assertEquals(0, this.sibs.getTotalValueOfOperations());
-//			assertEquals(0, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_TRANSFER));
-//			assertEquals(0, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_PAYMENT));
+		} catch (SibsException e1) {
+			assertEquals(((TransferOperation) this.sibs.getOperation(0)).getCurrentState(), Retry.getInstance());
 		}
+	}
 
+	@Test
+	public void ThreeRetriesOperationTest()
+			throws BankException, AccountException, SibsException, OperationException, ClientException {
+
+		this.mockServices = mock(Services.class);
+
+		this.sibs = new Sibs(100, this.mockServices);
+
+		when(this.mockServices.AccountExists(IBAN_1)).thenReturn(true);
+		when(this.mockServices.AccountExists(IBAN_2)).thenReturn(true);
+
+		when(this.mockServices.getBankCodeByIban(IBAN_1)).thenReturn(BANK_1);
+		when(this.mockServices.getBankCodeByIban(IBAN_2)).thenReturn(BANK_1);
+
+		doThrow(new AccountException()).when(this.mockServices).deposit(IBAN_2, AMOUNT_1);
+
+		try {
+			this.sibs.transfer(IBAN_1, IBAN_2, AMOUNT_1);
+		} catch (SibsException e1) {
+			doThrow(new AccountException()).when(this.mockServices).deposit(IBAN_2, AMOUNT_1);
+			try {
+				this.sibs.processOperations();
+			} catch (SibsException e2) {
+				doThrow(new AccountException()).when(this.mockServices).deposit(IBAN_2, AMOUNT_1);
+				try {
+					this.sibs.processOperations();
+				} catch (SibsException e3) {
+					doThrow(new AccountException()).when(this.mockServices).deposit(IBAN_2, AMOUNT_1);
+					try {
+						this.sibs.processOperations();
+
+					} catch (Exception e4) {
+						assertEquals(((TransferOperation) this.sibs.getOperation(0)).getCurrentState(),
+								Error.getInstance());
+					}
+				}
+			}
+		}
 	}
 
 	@After

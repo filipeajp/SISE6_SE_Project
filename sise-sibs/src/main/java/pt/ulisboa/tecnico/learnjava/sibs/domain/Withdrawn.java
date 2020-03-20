@@ -6,7 +6,6 @@ import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
 public class Withdrawn extends State {
 	private static Withdrawn instance = null;
-	Services services = new Services();
 
 	private Withdrawn() {
 	}
@@ -18,7 +17,7 @@ public class Withdrawn extends State {
 	}
 
 	@Override
-	public void process(TransferOperation t) throws AccountException, SibsException {
+	public void process(TransferOperation t, Services services) throws AccountException, SibsException {
 		String sourceIban = t.getSourceIban();
 		String targetIban = t.getTargetIban();
 
@@ -34,7 +33,7 @@ public class Withdrawn extends State {
 	}
 
 	@Override
-	public void cancel(TransferOperation t) throws AccountException {
+	public void cancel(TransferOperation t, Services services) throws AccountException {
 		String sourceIban = t.getSourceIban();
 		String targetIban = t.getTargetIban();
 

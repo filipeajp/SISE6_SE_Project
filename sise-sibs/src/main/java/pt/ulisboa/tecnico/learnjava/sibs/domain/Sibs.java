@@ -36,18 +36,19 @@ public class Sibs {
 
 	public void processOperations() throws SibsException, AccountException {
 		TransferOperation operation = null;
-		for (int i = 0; i < this.getNumberOfOperations(); i++) {
-			// while operation is not in state completed
-			try {
-				operation = (TransferOperation) this.getOperation(i);
-				if (!(operation.getCurrentState() instanceof Cancelled
-						|| operation.getCurrentState() instanceof Completed)) {
-					while (!(operation.getCurrentState() instanceof Completed)) {
-						operation.process();
+		for (int i = 0; i < this.operations.length; i++) {
+			if (this.operations[i] != null && this.operations[i] instanceof TransferOperation) {
+				try {
+					operation = (TransferOperation) this.getOperation(i);
+					if (!(operation.getCurrentState() instanceof Cancelled
+							|| operation.getCurrentState() instanceof Completed)) {
+						while (!(operation.getCurrentState() instanceof Completed)) {
+							operation.process();
+						}
 					}
+				} catch (SibsException | AccountException e) {
+					operation.retry();
 				}
-			} catch (SibsException | AccountException e) {
-				operation.retry();
 			}
 		}
 	}
@@ -73,7 +74,7 @@ public class Sibs {
 
 		Operation operation;
 		if (type.equals(Operation.OPERATION_TRANSFER)) {
-			operation = new TransferOperation(sourceIban, targetIban, value);
+			operation = new TransferOperation(sourceIban, targetIban, value, this.services);
 		} else {
 			operation = new PaymentOperation(targetIban, value);
 		}

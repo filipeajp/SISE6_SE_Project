@@ -5,7 +5,6 @@ import pt.ulisboa.tecnico.learnjava.bank.services.Services;
 
 public class Registered extends State {
 	private static Registered instance = null;
-	Services services = new Services();
 
 	private Registered() {
 	}
@@ -17,7 +16,7 @@ public class Registered extends State {
 	}
 
 	@Override
-	public void process(TransferOperation t) throws AccountException {
+	public void process(TransferOperation t, Services services) throws AccountException {
 		String sourceIban = t.getSourceIban();
 		String targetIban = t.getTargetIban();
 
@@ -31,7 +30,7 @@ public class Registered extends State {
 	}
 
 	@Override
-	public void cancel(TransferOperation t) {
+	public void cancel(TransferOperation t, Services services) {
 		t.setState(Cancelled.getInstance());
 	}
 }

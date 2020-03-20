@@ -1,17 +1,20 @@
 package pt.ulisboa.tecnico.learnjava.sibs.domain;
 
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
+import pt.ulisboa.tecnico.learnjava.bank.services.Services;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.OperationException;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
 public class TransferOperation extends Operation {
 	private final String sourceIban;
 	private final String targetIban;
+	Services services;
 
 	private State currentState;
 	private int attempts = 3;
 
-	public TransferOperation(String sourceIban, String targetIban, int value) throws OperationException {
+	public TransferOperation(String sourceIban, String targetIban, int value, Services services)
+			throws OperationException {
 		super(Operation.OPERATION_TRANSFER, value);
 
 		if (invalidString(sourceIban) || invalidString(targetIban)) {
@@ -20,6 +23,7 @@ public class TransferOperation extends Operation {
 
 		this.sourceIban = sourceIban;
 		this.targetIban = targetIban;
+		this.services = services;
 		this.currentState = Registered.getInstance();
 	}
 
@@ -49,11 +53,11 @@ public class TransferOperation extends Operation {
 	}
 
 	public void process() throws AccountException, SibsException {
-		this.currentState.process(this);
+		this.currentState.process(this, services);
 	}
 
 	public void cancel() throws SibsException, AccountException {
-		this.currentState.cancel(this);
+		this.currentState.cancel(this, services);
 	}
 
 	public void retry() {
