@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.learnjava.sibs.domain;
+package SibsInterface;
 
 public class MBWayInterfaceView {
 	

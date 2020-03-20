@@ -1,7 +1,8 @@
-package pt.ulisboa.tecnico.learnjava.sibs.domain;
+package SibsInterface;
 
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.services.Services;
+import pt.ulisboa.tecnico.learnjava.sibs.domain.Sibs;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.OperationException;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 

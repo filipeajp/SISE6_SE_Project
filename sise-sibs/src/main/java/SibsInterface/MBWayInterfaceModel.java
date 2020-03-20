@@ -1,4 +1,4 @@
-package pt.ulisboa.tecnico.learnjava.sibs.domain;
+package SibsInterface;
 
 import java.util.HashMap;
 import java.util.Random;
