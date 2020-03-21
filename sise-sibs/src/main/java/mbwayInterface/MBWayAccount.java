@@ -5,8 +5,8 @@ public class MBWayAccount {
 	private String iban;
 	private boolean isConfirmed;
 
-	public MBWayAccount(String phoneNumber) {
-		this.iban = phoneNumber;
+	public MBWayAccount(String iban) {
+		this.iban = iban;
 		this.isConfirmed = false;
 	}
 

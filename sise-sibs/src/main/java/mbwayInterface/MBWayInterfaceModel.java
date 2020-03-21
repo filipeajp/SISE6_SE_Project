@@ -8,7 +8,6 @@ import pt.ulisboa.tecnico.learnjava.sibs.exceptions.MBAccountException;
 public class MBWayInterfaceModel {
 	private Random r = new Random();
 
-	// vale a pena guardar confirmation code na conta?
 	public static HashMap<String, MBWayAccount> users = new HashMap<>();
 
 	private String userInput;
@@ -43,19 +42,16 @@ public class MBWayInterfaceModel {
 	}
 
 	public boolean confirmCode(String code) {
-		if (this.code.equals(code)) {
-
+		if (this.code.equals(code))
 			this.users.get(this.phoneNumber).confirm();
-			return true;
 
-		} else {
-			return false;
-		}
+		return this.code.equals(code);
 	}
 
 	public MBWayAccount getMBAccount(String phoneNumber) throws MBAccountException {
 		if (this.users.get(phoneNumber) == null)
 			throw new MBAccountException();
+
 		return this.users.get(phoneNumber);
 	}
 

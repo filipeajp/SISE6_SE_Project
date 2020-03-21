@@ -1,5 +1,7 @@
 package mbwayInterface;
 
+import java.util.Scanner;
+
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.services.Services;
 import pt.ulisboa.tecnico.learnjava.sibs.domain.Sibs;
@@ -76,32 +78,46 @@ public class MBWayInterfaceController {
 
 			int nrFriends = Integer.parseInt(userArgs[1]);
 			int totalAmount = Integer.parseInt(userArgs[2]);
-			int totalAccum = 0;
+			int totalAccum = totalAmount / (nrFriends + 1);
 
 			friends = new String[nrFriends];
 			int counter = 0;
 
-			while (userArgs[0].equals("friend")) {
+			Scanner s = new Scanner(System.in);
 
-				if (counter++ > nrFriends) {
+			String input = s.nextLine();
+			this.setUserInput(input);
+
+			String[] args = this.processInput(this.getUserInput());
+
+			while (args[0].equals("friend")) {
+				if (counter >= nrFriends) {
 					view.tooManyFriends();
 				} else {
-					String phone = userArgs[1];
-					int amount = Integer.parseInt(userArgs[2]);
-					if (model.getMBAccount(phone).confirmationState()) {
-						totalAccum += amount;
-						friends[counter] = phone;
-						counter++;
-					} else {
+					String phone = args[1];
+					int amount = Integer.parseInt(args[2]);
+					try {
+						if (model.getMBAccount(phone).confirmationState()) {
+							totalAccum += amount;
+							friends[counter] = phone;
+							counter++;
+						} else {
+							view.friendNotRegistered(phone);
+						}
+					} catch (MBAccountException e) {
 						view.friendNotRegistered(phone);
 					}
 				}
+
+				input = s.nextLine();
+				this.setUserInput(input);
+				args = this.processInput(this.getUserInput());
 			}
 
-			if (totalAmount != totalAccum) {
-				view.billWrong();
-			} else if (counter < nrFriends) {
+			if (counter < nrFriends) {
 				view.missingFriends();
+			} else if (totalAmount != totalAccum) {
+				view.billWrong();
 			} else {
 
 				int amountToPay = totalAmount / (nrFriends + 1);
@@ -155,21 +171,23 @@ public class MBWayInterfaceController {
 
 		MBWayAccount sourceAccount = null;
 		MBWayAccount targetAccount = null;
+
 		try {
 			sourceAccount = model.getMBAccount(sourcePhone);
 			targetAccount = model.getMBAccount(targetPhone);
+
+			if (!targetAccount.confirmationState()) {
+				view.wrongPhoneNumber();
+			} else if (this.services.getAccountByIban(sourceAccount.getIBAN()).getBalance() < amount) {
+				view.notEnoughMoney();
+			} else {
+				this.sibs.transfer(sourceAccount.getIBAN(), targetAccount.getIBAN(), amount);
+				view.successfullTransfer();
+			}
 		} catch (MBAccountException e) {
 			view.wrongPhoneNumber();
 		}
 
-		if (!targetAccount.confirmationState()) {
-			view.wrongPhoneNumber();
-		} else if (this.services.getAccountByIban(sourceAccount.getIBAN()).getBalance() < amount) {
-			view.notEnoughMoney();
-		} else {
-			this.sibs.transfer(sourceAccount.getIBAN(), targetAccount.getIBAN(), amount);
-			view.successfullTransfer();
-		}
 	}
 
 	private String[] processInput(String input) {
