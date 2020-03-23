@@ -17,13 +17,11 @@ public class Retry extends State {
 
 	@Override
 	public void process(TransferOperation t, Services services) throws AccountException {
-		String sourceIban = t.getSourceIban();
-		String targetIban = t.getTargetIban();
 		if (t.attempts <= 0) {
 			if (t.getLastState() instanceof Withdrawn) {
 				services.deposit(t.getSourceIban(), t.getValue());
 			} else if (t.getLastState() instanceof Deposited) {
-				services.withdraw(targetIban, t.getValue());
+				services.withdraw(t.getTargetIban(), t.getValue());
 				services.deposit(t.getSourceIban(), t.getValue());
 			}
 			t.setState(Error.getInstance());

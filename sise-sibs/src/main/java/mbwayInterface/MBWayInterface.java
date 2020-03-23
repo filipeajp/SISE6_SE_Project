@@ -15,6 +15,34 @@ import pt.ulisboa.tecnico.learnjava.sibs.exceptions.OperationException;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
 public class MBWayInterface {
+	private static Client[] client;
+
+	private static void createClients(Bank bank) throws ClientException {
+		client = new Client[10];
+		client[0] = new Client(bank, "Filipe", "Pinheiro", "242130704", "914801584", "First Street", 24);
+		client[1] = new Client(bank, "Joseph", "Manuel", "123456789", "987654322", "Second Street", 34);
+		client[2] = new Client(bank, "Joseph", "Manuel", "123456782", "987654323", "Second Street", 34);
+		client[3] = new Client(bank, "Joseph", "Manuel", "123456783", "987654324", "Second Street", 34);
+		client[4] = new Client(bank, "Joseph", "Manuel", "123456784", "987654325", "Second Street", 34);
+		client[5] = new Client(bank, "Joseph", "Manuel", "123456785", "987654326", "Second Street", 34);
+		client[6] = new Client(bank, "Joseph", "Manuel", "123456786", "987654327", "Second Street", 34);
+		client[7] = new Client(bank, "Joseph", "Manuel", "123456787", "987654328", "Second Street", 34);
+		client[8] = new Client(bank, "Joseph", "Manuel", "123456788", "987654329", "Second Street", 34);
+		client[9] = new Client(bank, "Joseph", "Manuel", "123556789", "987654333", "Second Street", 34);
+	}
+
+	private static void createAccounts(Bank bank) throws BankException, AccountException, ClientException {
+		bank.createAccount(AccountType.CHECKING, client[0], 1000, 0);
+		bank.createAccount(AccountType.CHECKING, client[1], 1000, 0);
+		bank.createAccount(AccountType.CHECKING, client[2], 1000, 0);
+		bank.createAccount(AccountType.CHECKING, client[3], 1000, 0);
+		bank.createAccount(AccountType.CHECKING, client[4], 1000, 0);
+		bank.createAccount(AccountType.CHECKING, client[5], 1000, 0);
+		bank.createAccount(AccountType.CHECKING, client[6], 1000, 0);
+		bank.createAccount(AccountType.CHECKING, client[7], 1000, 0);
+		bank.createAccount(AccountType.CHECKING, client[8], 1000, 0);
+		bank.createAccount(AccountType.CHECKING, client[9], 1000, 0);
+	}
 
 	public static void main(String[] args) throws SibsException, AccountException, OperationException, BankException,
 			ClientException, MBAccountException {
@@ -22,27 +50,8 @@ public class MBWayInterface {
 		Sibs sibs = new Sibs(100, services);
 		Bank cgd = new Bank("CGD");
 
-		Client clientOne = new Client(cgd, "Filipe", "Pinheiro", "242130704", "914801584", "First Street", 24);
-		Client clientTwo = new Client(cgd, "Joseph", "Manuel", "123456789", "987654322", "Second Street", 34);
-		Client clientThree = new Client(cgd, "Joseph", "Manuel", "123456782", "987654323", "Second Street", 34);
-		Client clientFour = new Client(cgd, "Joseph", "Manuel", "123456783", "987654324", "Second Street", 34);
-		Client clientFive = new Client(cgd, "Joseph", "Manuel", "123456784", "987654325", "Second Street", 34);
-		Client clientSix = new Client(cgd, "Joseph", "Manuel", "123456785", "987654326", "Second Street", 34);
-		Client clientSeven = new Client(cgd, "Joseph", "Manuel", "123456786", "987654327", "Second Street", 34);
-		Client clientEight = new Client(cgd, "Joseph", "Manuel", "123456787", "987654328", "Second Street", 34);
-		Client clientNine = new Client(cgd, "Joseph", "Manuel", "123456788", "987654329", "Second Street", 34);
-		Client clientTen = new Client(cgd, "Joseph", "Manuel", "123556789", "987654333", "Second Street", 34);
-
-		String iban1 = cgd.createAccount(AccountType.CHECKING, clientOne, 1000, 0);
-		String iban2 = cgd.createAccount(AccountType.CHECKING, clientTwo, 1000, 0);
-		String iban3 = cgd.createAccount(AccountType.CHECKING, clientThree, 1000, 0);
-		String iban4 = cgd.createAccount(AccountType.CHECKING, clientFour, 1000, 0);
-		String iban5 = cgd.createAccount(AccountType.CHECKING, clientFive, 1000, 0);
-		String iban6 = cgd.createAccount(AccountType.CHECKING, clientSix, 1000, 0);
-		String iban7 = cgd.createAccount(AccountType.CHECKING, clientSeven, 1000, 0);
-		String iban8 = cgd.createAccount(AccountType.CHECKING, clientEight, 1000, 0);
-		String iban9 = cgd.createAccount(AccountType.CHECKING, clientNine, 1000, 0);
-		String iban10 = cgd.createAccount(AccountType.CHECKING, clientTen, 1000, 0);
+		createClients(cgd);
+		createAccounts(cgd);
 
 		Scanner s = new Scanner(System.in);
 
