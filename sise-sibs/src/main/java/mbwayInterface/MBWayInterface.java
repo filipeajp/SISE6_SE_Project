@@ -58,7 +58,7 @@ public class MBWayInterface {
 		MBWayInterfaceModel mbmodel = new MBWayInterfaceModel();
 		MBWayInterfaceView mbview = new MBWayInterfaceView();
 
-		MBWayInterfaceController mbcontroller = new MBWayInterfaceController(mbmodel, mbview, services, sibs);
+		MBWayInterfaceController mbcontroller = new MBWayInterfaceController(s, mbmodel, mbview, services, sibs);
 
 		String input;
 

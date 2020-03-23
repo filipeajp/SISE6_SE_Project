@@ -22,15 +22,18 @@ public class MBWayInterfaceController {
 	private int nrOperations = 100;
 
 	private String[] friends;
+	Scanner s;
 	private int totalBill;
 
-	public MBWayInterfaceController(MBWayInterfaceModel model, MBWayInterfaceView view, Services services, Sibs sibs) {
+	public MBWayInterfaceController(Scanner s, MBWayInterfaceModel model, MBWayInterfaceView view, Services services,
+			Sibs sibs) {
 		this.model = model;
 		this.view = view;
 
 		this.isRunning = true;
 		this.services = services;
 		this.sibs = sibs;
+		this.s = s;
 
 	}
 
@@ -134,8 +137,8 @@ public class MBWayInterfaceController {
 
 		friends = new String[nrFriends];
 
-		Scanner s = new Scanner(System.in);
-		String input = s.nextLine();
+//		Scanner s = new Scanner(System.in);
+		String input = this.s.nextLine();
 		this.setUserInput(input);
 
 		String[] args = this.processInput(this.getUserInput());
@@ -158,7 +161,7 @@ public class MBWayInterfaceController {
 					view.friendNotRegistered(phone);
 				}
 			}
-			input = s.nextLine();
+			input = this.s.nextLine();
 			this.setUserInput(input);
 			args = this.processInput(this.getUserInput());
 		}

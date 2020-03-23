@@ -53,7 +53,6 @@ public class ProcessOperationsMethodTest {
 	private Client targetClient;
 	private Services services;
 	private Services mockServices;
-	private TransferOperation mockOperation;
 
 	@Before
 	public void setUp() throws ClientException, BankException, AccountException {

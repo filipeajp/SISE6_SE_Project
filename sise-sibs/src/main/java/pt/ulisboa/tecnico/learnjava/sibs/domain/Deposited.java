@@ -24,15 +24,11 @@ public class Deposited extends State {
 		} catch (AccountException e) {
 			throw new SibsException();
 		}
-
 	}
 
 	@Override
 	public void cancel(TransferOperation t, Services services) throws AccountException {
-		String sourceIban = t.getSourceIban();
-		String targetIban = t.getTargetIban();
-
-		services.withdraw(targetIban, t.getValue());
+		services.withdraw(t.getTargetIban(), t.getValue());
 		services.deposit(t.getSourceIban(), t.getValue());
 
 		t.setState(Cancelled.getInstance());

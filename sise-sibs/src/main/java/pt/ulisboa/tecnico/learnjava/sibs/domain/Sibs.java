@@ -30,8 +30,7 @@ public class Sibs {
 			if (this.operations[i] != null && this.operations[i] instanceof TransferOperation) {
 				try {
 					operation = (TransferOperation) this.getOperation(i);
-					if (!(operation.getCurrentState() instanceof Cancelled
-							|| operation.getCurrentState() instanceof Completed)) {
+					if (!(operation.getCurrentState() instanceof Cancelled)) {
 						while (!(operation.getCurrentState() instanceof Completed)) {
 							operation.process();
 						}

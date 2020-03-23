@@ -34,9 +34,6 @@ public class Withdrawn extends State {
 
 	@Override
 	public void cancel(TransferOperation t, Services services) throws AccountException {
-		String sourceIban = t.getSourceIban();
-		String targetIban = t.getTargetIban();
-
 		services.deposit(t.getSourceIban(), t.getValue());
 
 		t.setState(Cancelled.getInstance());
