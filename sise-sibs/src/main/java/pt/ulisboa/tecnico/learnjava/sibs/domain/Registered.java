@@ -18,9 +18,6 @@ public class Registered extends State {
 
 	@Override
 	public void process(TransferOperation t, Services services) throws AccountException, SibsException {
-		String sourceIban = t.getSourceIban();
-		String targetIban = t.getTargetIban();
-
 		try {
 			services.withdraw(t.getSourceIban(), t.getValue());
 			t.setState(Withdrawn.getInstance());

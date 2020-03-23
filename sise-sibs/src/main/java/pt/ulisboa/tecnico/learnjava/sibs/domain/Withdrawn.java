@@ -18,12 +18,9 @@ public class Withdrawn extends State {
 
 	@Override
 	public void process(TransferOperation t, Services services) throws AccountException, SibsException {
-		String sourceIban = t.getSourceIban();
-		String targetIban = t.getTargetIban();
-
 		try {
-			services.deposit(targetIban, t.getValue());
-			if (services.checkSameBanks(sourceIban, targetIban))
+			services.deposit(t.getTargetIban(), t.getValue());
+			if (services.checkSameBanks(t.getSourceIban(), t.getTargetIban()))
 				t.setState(Completed.getInstance());
 			else
 				t.setState(Deposited.getInstance());
