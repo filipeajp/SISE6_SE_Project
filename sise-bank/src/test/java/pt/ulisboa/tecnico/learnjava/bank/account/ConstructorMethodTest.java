@@ -1,6 +1,7 @@
 package pt.ulisboa.tecnico.learnjava.bank.account;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -42,11 +43,12 @@ public class ConstructorMethodTest {
 
 	@Test
 	public void nullClient() throws ClientException {
+		Account account = null;
 		try {
-			new CheckingAccount(null, AMOUNT);
+			account = new CheckingAccount(null, AMOUNT);
 			fail();
 		} catch (AccountException e) {
-			// passes
+			assertNull(account);
 		}
 	}
 
