@@ -136,13 +136,8 @@ public class MBWayInterfaceController {
 
 		friends = new String[nrFriends];
 
-		String input = this.s.nextLine();
-		this.setUserInput(input);
-
-		String[] args = this.processInput(this.getUserInput());
-
 		int[] a = new int[2];
-		a = inputFriend(args, counter, nrFriends, totalAccum);
+		a = inputFriend(counter, nrFriends, totalAccum);
 
 		counter = a[0];
 		totalAccum = a[1];
@@ -150,7 +145,11 @@ public class MBWayInterfaceController {
 		processSplitBill(counter, nrFriends, totalAmount, totalAccum);
 	}
 
-	private int[] inputFriend(String[] args, int counter, int nrFriends, int totalAccum) {
+	private int[] inputFriend(int counter, int nrFriends, int totalAccum) {
+		String input = this.s.nextLine();
+		this.setUserInput(input);
+
+		String[] args = this.processInput(this.getUserInput());
 		while (args[0].equals("friend")) {
 			if (counter >= nrFriends) {
 				view.tooManyFriends();
@@ -169,7 +168,7 @@ public class MBWayInterfaceController {
 					view.friendNotRegistered(phone);
 				}
 			}
-			String input = this.s.nextLine();
+			input = this.s.nextLine();
 			this.setUserInput(input);
 			args = this.processInput(this.getUserInput());
 		}
