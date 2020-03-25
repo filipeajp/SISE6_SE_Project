@@ -141,6 +141,16 @@ public class MBWayInterfaceController {
 
 		String[] args = this.processInput(this.getUserInput());
 
+		int[] a = new int[2];
+		a = inputFriend(args, counter, nrFriends, totalAccum);
+
+		counter = a[0];
+		totalAccum = a[1];
+
+		processSplitBill(counter, nrFriends, totalAmount, totalAccum);
+	}
+
+	private int[] inputFriend(String[] args, int counter, int nrFriends, int totalAccum) {
 		while (args[0].equals("friend")) {
 			if (counter >= nrFriends) {
 				view.tooManyFriends();
@@ -159,17 +169,22 @@ public class MBWayInterfaceController {
 					view.friendNotRegistered(phone);
 				}
 			}
-			input = this.s.nextLine();
+			String input = this.s.nextLine();
 			this.setUserInput(input);
 			args = this.processInput(this.getUserInput());
 		}
 
+		int[] a = { counter, totalAccum };
+		return a;
+	}
+
+	private void processSplitBill(int counter, int nrFriends, int totalAmount, int totalAccum)
+			throws MBAccountException, SibsException, AccountException, OperationException {
 		if (counter < nrFriends) {
 			view.missingFriends();
 		} else if (totalAmount != totalAccum) {
 			view.billWrong();
 		} else {
-
 			int amountToPay = totalAmount / (nrFriends + 1);
 			MBWayAccount friendAccount;
 			MBWayAccount userAccount = model.getMBAccount(model.getPhoneNumber());
@@ -186,7 +201,6 @@ public class MBWayInterfaceController {
 					countSuccess++;
 				}
 			}
-			// ver isto
 			if (nrFriends == countSuccess) {
 				view.successfullBillTransfer();
 			}
