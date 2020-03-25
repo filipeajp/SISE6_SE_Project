@@ -142,7 +142,31 @@ public class MBWayInterfaceController {
 		counter = a[0];
 		totalAccum = a[1];
 
-		processSplitBill(counter, nrFriends, totalAmount, totalAccum);
+		if (counter < nrFriends) {
+			view.missingFriends();
+		} else if (totalAmount != totalAccum) {
+			view.billWrong();
+		} else {
+			int amountToPay = totalAmount / (nrFriends + 1);
+			MBWayAccount friendAccount;
+			MBWayAccount userAccount = model.getMBAccount(model.getPhoneNumber());
+			int countSuccess = 0;
+
+			for (String friendPhone : friends) {
+				friendAccount = model.getMBAccount(friendPhone);
+
+				if (this.services.getAccountByIban(friendAccount.getIBAN()).getBalance() < amountToPay) {
+					view.friendNotEnoughMoney();
+				} else {
+					this.sibs.transfer(friendAccount.getIBAN(), userAccount.getIBAN(), amountToPay);
+					this.sibs.processOperations();
+					countSuccess++;
+				}
+			}
+			if (nrFriends == countSuccess) {
+				view.successfullBillTransfer();
+			}
+		}
 	}
 
 	private int[] inputFriend(int counter, int nrFriends, int totalAccum) {
@@ -179,31 +203,7 @@ public class MBWayInterfaceController {
 
 	private void processSplitBill(int counter, int nrFriends, int totalAmount, int totalAccum)
 			throws MBAccountException, SibsException, AccountException, OperationException {
-		if (counter < nrFriends) {
-			view.missingFriends();
-		} else if (totalAmount != totalAccum) {
-			view.billWrong();
-		} else {
-			int amountToPay = totalAmount / (nrFriends + 1);
-			MBWayAccount friendAccount;
-			MBWayAccount userAccount = model.getMBAccount(model.getPhoneNumber());
-			int countSuccess = 0;
 
-			for (String friendPhone : friends) {
-				friendAccount = model.getMBAccount(friendPhone);
-
-				if (this.services.getAccountByIban(friendAccount.getIBAN()).getBalance() < amountToPay) {
-					view.friendNotEnoughMoney();
-				} else {
-					this.sibs.transfer(friendAccount.getIBAN(), userAccount.getIBAN(), amountToPay);
-					this.sibs.processOperations();
-					countSuccess++;
-				}
-			}
-			if (nrFriends == countSuccess) {
-				view.successfullBillTransfer();
-			}
-		}
 	}
 
 	private String[] processInput(String input) {
