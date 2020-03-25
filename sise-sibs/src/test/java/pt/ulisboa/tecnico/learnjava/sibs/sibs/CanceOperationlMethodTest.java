@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.learnjava.sibs.sibs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
@@ -45,6 +47,8 @@ public class CanceOperationlMethodTest {
 	private Client sourceClient;
 	private Client targetClient;
 	private Services services;
+	private Person sourcePerson;
+	private Person targetPerson;
 
 	@Before
 	public void setUp() throws ClientException, BankException, AccountException {
@@ -52,8 +56,10 @@ public class CanceOperationlMethodTest {
 		this.sibs = new Sibs(100, services);
 		this.sourceBank = new Bank("CGD");
 		this.targetBank = new Bank("BPI");
-		this.sourceClient = new Client(this.sourceBank, FIRST_NAME, LAST_NAME, NIF, PHONE_NUMBER, ADDRESS, 33);
-		this.targetClient = new Client(this.targetBank, FIRST_NAME, LAST_NAME, NIF, PHONE_NUMBER, ADDRESS, 22);
+		this.sourcePerson = new Person(FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, 33);
+		this.targetPerson = new Person(FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, 33);
+		this.sourceClient = new Client(this.sourceBank, this.sourcePerson, NIF);
+		this.targetClient = new Client(this.targetBank, this.targetPerson, NIF);
 	}
 
 	@Test
@@ -68,6 +74,7 @@ public class CanceOperationlMethodTest {
 
 		try {
 			this.sibs.cancelOperation(1);
+			fail();
 		} catch (SibsException e) {
 			assertEquals(1000, this.services.getAccountByIban(sourceIban).getBalance());
 			assertEquals(1000, this.services.getAccountByIban(targetIban).getBalance());

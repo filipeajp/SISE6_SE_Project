@@ -12,6 +12,7 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.CheckingAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.domain.SalaryAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.SavingsAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.YoungAccount;
@@ -36,9 +37,14 @@ public class ExamTests {
 		this.services = new Services();
 		this.bank = new Bank("CGD");
 
-		this.client = new Client(this.bank, "José", "Manuel", "123456789", "987654321", "Street", 33);
-		Client otherClient = new Client(this.bank, "José", "Manuel", "023456789", "987654321", "Street", 33);
-		this.youngClient = new Client(this.bank, "José", "Manuel", "123456780", "987654321", "Street", 17);
+		Person person = new Person("José", "Manuel", "987654321", "Street", 33);
+		this.client = new Client(this.bank, person, "123456789");
+
+		Person otherPerson = new Person("José", "Manuel", "987654321", "Street", 33);
+		Client otherClient = new Client(this.bank, otherPerson, "023456789");
+
+		Person youngPerson = new Person("José", "Manuel", "987654321", "Street", 17);
+		this.youngClient = new Client(this.bank, youngPerson, "123456780");
 
 		this.checking = (CheckingAccount) this.services
 				.getAccountByIban(this.bank.createAccount(Bank.AccountType.CHECKING, this.client, 0, 0));

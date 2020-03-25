@@ -1,4 +1,4 @@
-package mbwayInterface;
+package pt.ulisboa.tecnico.learnjava.sibs.mbwayInterface;
 
 import java.util.Scanner;
 
@@ -22,14 +22,13 @@ public class MBWayInterfaceController {
 	private int nrOperations = 100;
 
 	private String[] friends;
-	Scanner s;
+	private Scanner s;
 	private int totalBill;
 
 	public MBWayInterfaceController(Scanner s, MBWayInterfaceModel model, MBWayInterfaceView view, Services services,
 			Sibs sibs) {
 		this.model = model;
 		this.view = view;
-
 		this.isRunning = true;
 		this.services = services;
 		this.sibs = sibs;
@@ -137,7 +136,6 @@ public class MBWayInterfaceController {
 
 		friends = new String[nrFriends];
 
-//		Scanner s = new Scanner(System.in);
 		String input = this.s.nextLine();
 		this.setUserInput(input);
 

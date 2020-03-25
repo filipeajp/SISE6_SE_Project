@@ -9,6 +9,7 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Account;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
@@ -20,8 +21,8 @@ public class GetAccountByAccountIdMethodTest {
 	@Before
 	public void setUp() throws BankException, AccountException, ClientException {
 		this.bank = new Bank("CGD");
-
-		this.client = new Client(this.bank, "José", "Manuel", "123456789", "987654321", "Street", 33);
+		Person person = new Person("José", "Manuel", "987654321", "Street", 33);
+		this.client = new Client(this.bank, person, "123456789");
 	}
 
 	@Test

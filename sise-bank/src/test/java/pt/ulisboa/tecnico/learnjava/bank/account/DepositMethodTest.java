@@ -10,6 +10,7 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.CheckingAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.domain.SavingsAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.YoungAccount;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
@@ -25,12 +26,15 @@ public class DepositMethodTest {
 	public void setUp() throws AccountException, ClientException, BankException {
 		Bank bank = new Bank("CGD");
 
-		Client client = new Client(bank, "José", "Manuel", "123456789", "987654321", "Street", 33);
-		Client youngclient = new Client(bank, "José", "Manuel", "123456780", "987654321", "Street", 17);
+		Person person = new Person("José", "Manuel", "987654321", "Street", 33);
+		Client client = new Client(bank, person, "123456789");
+
+		Person youngPerson = new Person("José", "Manuel", "987654321", "Street", 17);
+		Client youngClient = new Client(bank, youngPerson, "123456780");
 
 		this.checking = new CheckingAccount(client, 0);
 		this.savings = new SavingsAccount(client, 100, 10);
-		this.young = new YoungAccount(youngclient, 100);
+		this.young = new YoungAccount(youngClient, 100);
 	}
 
 	@Test

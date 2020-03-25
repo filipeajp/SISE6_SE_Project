@@ -13,6 +13,7 @@ import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank.AccountType;
 import pt.ulisboa.tecnico.learnjava.bank.domain.CheckingAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.domain.SalaryAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.SavingsAccount;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
@@ -29,7 +30,8 @@ public class CreateAccountMethodTest {
 	public void setUp() throws BankException, ClientException {
 		this.services = new Services();
 		this.bank = new Bank("CGD");
-		this.client = new Client(this.bank, "José", "Manuel", "123456789", "987654321", "Street", 33);
+		Person person = new Person("José", "Manuel", "987654321", "Street", 33);
+		this.client = new Client(this.bank, person, "123456789");
 	}
 
 	@Test
@@ -59,7 +61,8 @@ public class CreateAccountMethodTest {
 
 	@Test
 	public void successYoungAccount() throws BankException, AccountException, ClientException {
-		Client youngClient = new Client(this.bank, "José", "Manuel", "123456780", "987654321", "Street", 16);
+		Person youngPerson = new Person("José", "Manuel", "987654321", "Street", 16);
+		Client youngClient = new Client(this.bank, youngPerson, "123456780");
 		String iban = this.bank.createAccount(AccountType.YOUNG, youngClient, 100, 100);
 
 		Account account = this.services.getAccountByIban(iban);
@@ -73,7 +76,8 @@ public class CreateAccountMethodTest {
 
 	@Test
 	public void failYoungAccountMoreThan17() throws BankException, AccountException, ClientException {
-		Client notSoYoungClient = new Client(this.bank, "José", "Manuel", "123456780", "987654321", "Street", 18);
+		Person notSoYoungPerson = new Person("José", "Manuel", "987654321", "Street", 18);
+		Client notSoYoungClient = new Client(this.bank, notSoYoungPerson, "123456780");
 
 		try {
 			this.bank.createAccount(AccountType.YOUNG, notSoYoungClient, 100, 100);
@@ -85,7 +89,8 @@ public class CreateAccountMethodTest {
 
 	@Test
 	public void failYoungAccountBaseNot10() throws BankException, AccountException, ClientException {
-		Client notSoYoungClient = new Client(this.bank, "José", "Manuel", "123456780", "987654321", "Street", 18);
+		Person notSoYoungPerson = new Person("José", "Manuel", "987654321", "Street", 18);
+		Client notSoYoungClient = new Client(this.bank, notSoYoungPerson, "123456780");
 
 		try {
 			this.bank.createAccount(AccountType.YOUNG, notSoYoungClient, 100, 100);

@@ -10,6 +10,7 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.CheckingAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.domain.YoungAccount;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
@@ -27,7 +28,8 @@ public class HappyBirthdayMethodTest {
 		this.services = new Services();
 		this.bank = new Bank("CGD");
 
-		this.youngClient = new Client(this.bank, "José", "Manuel", "123456780", "987654321", "Street", 16);
+		Person person = new Person("José", "Manuel", "987654321", "Street", 16);
+		this.youngClient = new Client(this.bank, person, "123456780");
 
 		this.young = (YoungAccount) this.services
 				.getAccountByIban(this.bank.createAccount(Bank.AccountType.YOUNG, this.youngClient, 100, 0));
@@ -39,8 +41,9 @@ public class HappyBirthdayMethodTest {
 	@Test
 	public void successNoUpgrade() throws BankException, AccountException, ClientException {
 		this.youngClient.happyBirthDay();
+		Person person = this.youngClient.getPerson();
 
-		assertEquals(17, this.youngClient.getAge());
+		assertEquals(17, person.getAge());
 		assertTrue(this.youngClient.getAccounts().allMatch(a -> a instanceof YoungAccount));
 	}
 
@@ -49,7 +52,9 @@ public class HappyBirthdayMethodTest {
 		this.youngClient.happyBirthDay();
 		this.youngClient.happyBirthDay();
 
-		assertEquals(18, this.youngClient.getAge());
+		Person person = this.youngClient.getPerson();
+
+		assertEquals(18, person.getAge());
 		assertTrue(this.youngClient.getAccounts().allMatch(a -> a instanceof CheckingAccount));
 	}
 

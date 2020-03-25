@@ -10,6 +10,7 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Account;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
@@ -31,7 +32,8 @@ public class DeleteAccountMethodTest {
 	public void setUp() throws BankException, ClientException, AccountException {
 		this.services = new Services();
 		this.bank = new Bank("CGD");
-		this.client = new Client(this.bank, FIRST_NAME, LAST_NAME, NIF, PHONE_NUMBER, ADDRESS, 33);
+		Person person = new Person(FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, 33);
+		this.client = new Client(this.bank, person, NIF);
 		String iban = this.bank.createAccount(Bank.AccountType.CHECKING, this.client, 100, 0);
 		this.account = this.services.getAccountByIban(iban);
 	}

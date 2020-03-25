@@ -12,6 +12,7 @@ import pt.ulisboa.tecnico.learnjava.bank.domain.Account;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.CheckingAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
@@ -21,11 +22,13 @@ public class ConstructorMethodTest {
 
 	private Bank bank;
 	private Client client;
+	private Person person;
 
 	@Before
 	public void setUp() throws BankException, ClientException {
 		this.bank = new Bank("CGD");
-		this.client = new Client(this.bank, "José", "Manuel", "123456789", "987654321", "Street", 33);
+		this.person = new Person("José", "Manuel", "987654321", "Street", 33);
+		this.client = new Client(this.bank, this.person, "123456789");
 	}
 
 	@Test

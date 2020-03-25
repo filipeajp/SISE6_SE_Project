@@ -1,4 +1,4 @@
-package mbwayInterface;
+package pt.ulisboa.tecnico.learnjava.sibs.mbwayInterface;
 
 public class MBWayInterfaceView {
 

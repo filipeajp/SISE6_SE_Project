@@ -32,7 +32,7 @@ public abstract class Account {
 	protected abstract String getNextAcccountId();
 
 	protected void checkClientAge(Client client) throws AccountException {
-		if (client.getAge() < 18) {
+		if (client.getPerson().getAge() < 18) {
 			throw new AccountException();
 		}
 	}

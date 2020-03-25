@@ -1,4 +1,4 @@
-package mbwayInterface;
+package pt.ulisboa.tecnico.learnjava.sibs.mbwayInterface;
 
 import java.util.HashMap;
 import java.util.Random;

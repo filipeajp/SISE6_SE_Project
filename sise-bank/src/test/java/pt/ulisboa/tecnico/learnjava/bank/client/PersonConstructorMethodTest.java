@@ -1,21 +1,17 @@
 package pt.ulisboa.tecnico.learnjava.bank.client;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
-import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
 
-public class ConstructorMethodTest {
+public class PersonConstructorMethodTest {
 	private static final String ADDRESS = "Ave.";
 	private static final String PHONE_NUMBER = "987654321";
 	private static final String NIF = "123456789";
@@ -24,7 +20,6 @@ public class ConstructorMethodTest {
 	private static final int AGE = 33;
 
 	private Bank bank;
-	private Person person;
 
 	@Before
 	public void setUp() throws BankException {
@@ -33,33 +28,28 @@ public class ConstructorMethodTest {
 
 	@Test
 	public void success() throws ClientException {
-		this.person = new Person(FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, AGE);
-		Client client = new Client(this.bank, person, NIF);
+		Person person = new Person(FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, AGE);
 
-		assertEquals(this.bank, client.getBank());
-		assertNotNull(client.getPerson());
-		assertEquals(NIF, client.getNif());
-		assertTrue(this.bank.isClientOfBank(client));
+		assertEquals(FIRST_NAME, person.getFirstName());
+		assertEquals(LAST_NAME, person.getLastName());
+		assertEquals(PHONE_NUMBER, person.getPhoneNumber());
+		assertEquals(ADDRESS, person.getAddress());
+		assertEquals(AGE, person.getAge());
+
 	}
 
 	@Test(expected = ClientException.class)
-	public void no9DigitsNif() throws ClientException {
-		new Client(this.bank, this.person, "12345678A");
+	public void negativeAge() throws ClientException {
+		new Person(FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, -1);
 	}
 
-	public void twoClientsSameNif() throws ClientException {
-		new Client(this.bank, this.person, NIF);
-		try {
-			new Client(this.bank, this.person, NIF);
-			fail();
-		} catch (ClientException e) {
-			assertEquals(1, this.bank.getTotalNumberOfClients());
-		}
+	@Test(expected = ClientException.class)
+	public void no9DigitsPhoneNumber() throws ClientException {
+		new Person(FIRST_NAME, LAST_NAME, "A87654321", ADDRESS, AGE);
 	}
 
 	@After
 	public void tearDown() {
 		Bank.clearBanks();
 	}
-
 }

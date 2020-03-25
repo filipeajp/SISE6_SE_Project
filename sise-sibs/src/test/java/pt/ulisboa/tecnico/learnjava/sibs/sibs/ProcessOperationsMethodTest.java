@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
@@ -53,6 +54,8 @@ public class ProcessOperationsMethodTest {
 	private Client targetClient;
 	private Services services;
 	private Services mockServices;
+	private Person sourcePerson;
+	private Person targetPerson;
 
 	@Before
 	public void setUp() throws ClientException, BankException, AccountException {
@@ -60,8 +63,10 @@ public class ProcessOperationsMethodTest {
 		this.sibs = new Sibs(100, services);
 		this.sourceBank = new Bank("CGD");
 		this.targetBank = new Bank("BPI");
-		this.sourceClient = new Client(this.sourceBank, FIRST_NAME, LAST_NAME, NIF, PHONE_NUMBER, ADDRESS, 33);
-		this.targetClient = new Client(this.targetBank, FIRST_NAME, LAST_NAME, NIF, PHONE_NUMBER, ADDRESS, 22);
+		this.sourcePerson = new Person(FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, 33);
+		this.targetPerson = new Person(FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, 33);
+		this.sourceClient = new Client(this.sourceBank, this.sourcePerson, NIF);
+		this.targetClient = new Client(this.targetBank, this.targetPerson, NIF);
 	}
 
 	@Test

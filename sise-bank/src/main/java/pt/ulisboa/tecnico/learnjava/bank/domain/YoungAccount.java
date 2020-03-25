@@ -17,7 +17,7 @@ public class YoungAccount extends SavingsAccount {
 
 	@Override
 	protected void checkClientAge(Client client) throws AccountException {
-		if (client.getAge() >= 18) {
+		if (client.getPerson().getAge() >= 18) {
 			throw new AccountException();
 		}
 	}

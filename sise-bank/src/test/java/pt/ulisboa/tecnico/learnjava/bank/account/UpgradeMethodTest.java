@@ -11,6 +11,7 @@ import org.junit.Test;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Bank;
 import pt.ulisboa.tecnico.learnjava.bank.domain.CheckingAccount;
 import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
+import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.domain.YoungAccount;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
@@ -28,7 +29,8 @@ public class UpgradeMethodTest {
 		this.services = new Services();
 		this.bank = new Bank("CGD");
 
-		this.youngClient = new Client(this.bank, "José", "Manuel", "123456780", "987654321", "Street", 17);
+		Person person = new Person("José", "Manuel", "987654321", "Street", 17);
+		this.youngClient = new Client(this.bank, person, "123456780");
 
 		this.young = (YoungAccount) this.services
 				.getAccountByIban(this.bank.createAccount(Bank.AccountType.YOUNG, this.youngClient, 100, 0));
@@ -38,7 +40,7 @@ public class UpgradeMethodTest {
 	public void success() throws BankException, AccountException, ClientException {
 		this.young.deposit(19_000);
 
-		this.youngClient.setAge(18);
+		this.youngClient.getPerson().setAge(18);
 		CheckingAccount checking = this.young.upgrade();
 
 		assertEquals(1, this.bank.getTotalNumberOfAccounts());
@@ -56,7 +58,7 @@ public class UpgradeMethodTest {
 		this.bank.createAccount(Bank.AccountType.YOUNG, this.youngClient, 100, 0);
 		this.bank.createAccount(Bank.AccountType.YOUNG, this.youngClient, 100, 0);
 
-		this.youngClient.setAge(18);
+		this.youngClient.getPerson().setAge(18);
 		CheckingAccount checking = this.young.upgrade();
 
 		assertEquals(5, this.bank.getTotalNumberOfAccounts());
