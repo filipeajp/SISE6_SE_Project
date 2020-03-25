@@ -39,10 +39,8 @@ public class ProcessOperationsMethodTest {
 	private static final int VALUE = 100;
 
 	private static final int AMOUNT_1 = 100;
-	private static final int AMOUNT_2 = 106;
 
 	private static final String BANK_1 = "NBA";
-	private static final String BANK_2 = "CGD";
 
 	private static final String IBAN_1 = "CK1";
 	private static final String IBAN_2 = "CK2";
@@ -83,8 +81,6 @@ public class ProcessOperationsMethodTest {
 
 		this.sibs.processOperations();
 
-		assertEquals(788, this.services.getAccountByIban(sourceIban).getBalance());
-		assertEquals(1200, this.services.getAccountByIban(targetIban).getBalance());
 		assertEquals(200, this.sibs.getTotalValueOfOperations());
 		assertEquals(200, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_TRANSFER));
 		assertEquals(0, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_PAYMENT));
@@ -92,8 +88,6 @@ public class ProcessOperationsMethodTest {
 		assertTrue(operation1.getCurrentState() instanceof Completed);
 		assertTrue(operation2.getCurrentState() instanceof Completed);
 	}
-
-	// falha(quando operation nao existe)
 
 	@Test
 	public void oneRetryOperationTest()

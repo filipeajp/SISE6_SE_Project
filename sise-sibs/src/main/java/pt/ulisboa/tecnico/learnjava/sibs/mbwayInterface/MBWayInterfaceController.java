@@ -127,7 +127,7 @@ public class MBWayInterfaceController {
 
 	}
 
-	public void mbwaySplitBill(String[] userArgs)
+	private void mbwaySplitBill(String[] userArgs)
 			throws MBAccountException, SibsException, AccountException, OperationException {
 		int nrFriends = Integer.parseInt(userArgs[1]);
 		int totalAmount = Integer.parseInt(userArgs[2]);
@@ -199,11 +199,6 @@ public class MBWayInterfaceController {
 
 		int[] a = { counter, totalAccum };
 		return a;
-	}
-
-	private void processSplitBill(int counter, int nrFriends, int totalAmount, int totalAccum)
-			throws MBAccountException, SibsException, AccountException, OperationException {
-
 	}
 
 	private String[] processInput(String input) {
