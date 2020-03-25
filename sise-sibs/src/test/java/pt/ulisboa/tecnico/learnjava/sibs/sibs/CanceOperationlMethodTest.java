@@ -32,15 +32,6 @@ public class CanceOperationlMethodTest {
 	private static final String ADDRESS = "Rua da Ribeira";
 	private static final int VALUE = 100;
 
-	private static final int AMOUNT_1 = 100;
-	private static final int AMOUNT_2 = 106;
-
-	private static final String BANK_1 = "NBA";
-	private static final String BANK_2 = "CGD";
-
-	private static final String IBAN_1 = "CK1";
-	private static final String IBAN_2 = "CK2";
-
 	private Sibs sibs;
 	private Bank sourceBank;
 	private Bank targetBank;
@@ -76,8 +67,6 @@ public class CanceOperationlMethodTest {
 			this.sibs.cancelOperation(1);
 			fail();
 		} catch (SibsException e) {
-			assertEquals(1000, this.services.getAccountByIban(sourceIban).getBalance());
-			assertEquals(1000, this.services.getAccountByIban(targetIban).getBalance());
 			assertEquals(100, this.sibs.getTotalValueOfOperations());
 			assertEquals(100, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_TRANSFER));
 			assertEquals(0, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_PAYMENT));
@@ -108,8 +97,6 @@ public class CanceOperationlMethodTest {
 
 		this.sibs.processOperations();
 
-		assertEquals(788, this.services.getAccountByIban(sourceIban).getBalance());
-		assertEquals(1200, this.services.getAccountByIban(targetIban).getBalance());
 		assertEquals(300, this.sibs.getTotalValueOfOperations());
 		assertEquals(300, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_TRANSFER));
 		assertEquals(0, this.sibs.getTotalValueOfOperationsForType(Operation.OPERATION_PAYMENT));

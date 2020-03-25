@@ -24,7 +24,6 @@ import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 public class TransferMethodTest {
 
 	private static final int AMOUNT_1 = 100;
-	private static final int AMOUNT_2 = 106;
 
 	private static final String BANK_1 = "NBA";
 	private static final String BANK_2 = "CGD";
