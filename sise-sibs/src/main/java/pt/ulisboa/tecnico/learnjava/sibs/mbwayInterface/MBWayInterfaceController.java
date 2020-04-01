@@ -118,7 +118,6 @@ public class MBWayInterfaceController {
 				view.notEnoughMoney();
 			} else {
 				this.sibs.transfer(sourceAccount.getIBAN(), targetAccount.getIBAN(), amount);
-				this.sibs.processOperations();
 				view.successfullTransfer();
 			}
 		} catch (MBAccountException e) {
@@ -159,7 +158,6 @@ public class MBWayInterfaceController {
 					view.friendNotEnoughMoney();
 				} else {
 					this.sibs.transfer(friendAccount.getIBAN(), userAccount.getIBAN(), amountToPay);
-					this.sibs.processOperations();
 					countSuccess++;
 				}
 			}
