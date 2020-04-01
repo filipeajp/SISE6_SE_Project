@@ -13,6 +13,8 @@ public class Client {
 
 	private final Bank bank;
 	private final String nif;
+	// the creation of a Class Person was done as a refactor for "Keep Unit
+	// Interfaces Small"
 	private final Person person;
 
 	public Client(Bank bank, Person person, String nif) throws ClientException {

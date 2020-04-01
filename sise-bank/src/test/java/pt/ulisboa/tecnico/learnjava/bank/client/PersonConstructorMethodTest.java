@@ -11,6 +11,7 @@ import pt.ulisboa.tecnico.learnjava.bank.domain.Person;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
 
+// Test for Person Constructor - Consequence of refactor for "keep unit interfaces small" 
 public class PersonConstructorMethodTest {
 	private static final String ADDRESS = "Ave.";
 	private static final String PHONE_NUMBER = "987654321";

@@ -2,6 +2,7 @@ package pt.ulisboa.tecnico.learnjava.bank.domain;
 
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
 
+// Refactor for Keep Unit Interfaces Small
 public class Person {
 	private final String firstName;
 	private final String lastName;

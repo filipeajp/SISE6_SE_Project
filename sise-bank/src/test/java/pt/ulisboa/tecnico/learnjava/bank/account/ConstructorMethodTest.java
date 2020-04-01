@@ -48,6 +48,7 @@ public class ConstructorMethodTest {
 			account = new CheckingAccount(null, AMOUNT);
 			fail();
 		} catch (AccountException e) {
+			// Refactor for Write Clean Code (line 52)
 			assertNull(account);
 		}
 	}

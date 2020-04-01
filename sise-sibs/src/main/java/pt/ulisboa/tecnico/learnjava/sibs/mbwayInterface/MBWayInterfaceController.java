@@ -77,6 +77,7 @@ public class MBWayInterfaceController {
 			break;
 
 		case "mbway-split-bill":
+			// Refactor for Write Short Units of Code (line 81)
 			mbwaySplitBill(userArgs);
 			break;
 		}
@@ -136,6 +137,7 @@ public class MBWayInterfaceController {
 		friends = new String[nrFriends];
 
 		int[] a = new int[2];
+		// refactor for Write short units of code (line 141)
 		a = inputFriend(counter, nrFriends, totalAccum);
 
 		counter = a[0];
